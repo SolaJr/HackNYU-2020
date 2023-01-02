@@ -1,0 +1,107 @@
+var _____WB$wombat$assign$function_____ = function(name) {return (self._wb_wombat && self._wb_wombat.local_init && self._wb_wombat.local_init(name)) || self[name]; };
+if (!self.__WB_pmw) { self.__WB_pmw = function(obj) { this.__WB_source = obj; return this; } }
+{
+  let window = _____WB$wombat$assign$function_____("window");
+  let self = _____WB$wombat$assign$function_____("self");
+  let document = _____WB$wombat$assign$function_____("document");
+  let location = _____WB$wombat$assign$function_____("location");
+  let top = _____WB$wombat$assign$function_____("top");
+  let parent = _____WB$wombat$assign$function_____("parent");
+  let frames = _____WB$wombat$assign$function_____("frames");
+  let opener = _____WB$wombat$assign$function_____("opener");
+
+function initMobileNav() {
+    const burger = document.querySelector(".nav-burger")
+    const nav = document.querySelector(".nav-links")
+    const navLinks = document.querySelectorAll(".nav-links li")
+
+    burger.addEventListener("click", () => {
+        nav.classList.toggle("nav-active")
+
+        navLinks.forEach( (link, index)=> {
+            if (link.style.animation) {
+                link.style.animation = ""
+            } else {
+                link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.2}s`
+            }
+        })
+    })
+}
+
+function handleURLChange() {
+    const navLinks = document.querySelectorAll(".nav-links a")
+
+    for (let link of navLinks) {        
+        console.log(link.href)
+        const hashIndex = link.href.indexOf('#')
+        const hash = link.href.substring(hashIndex)
+        console.log(hash)
+
+        link.classList.remove("navlink-active-orange")
+        if (hash == window.location.hash) {
+            link.classList.toggle("navlink-active-orange")
+        }
+    }
+}
+
+let scrollTimeout
+let currentLink
+
+function handleScroll() {
+    const navLinks = [...document.querySelectorAll(".nav-links a")]
+    const sections = [...document.querySelectorAll(".tab")].sort((el1, el2) => el1.offsetTop - el2.offsetTop)
+    let currentSection = sections[0]
+
+    // console.log(window.scrollY)
+    for (let sec of sections) {
+        if (window.scrollY > sec.offsetTop - 400) {
+            currentSection = sec
+        }
+    }
+
+    // console.log(currentSection)
+    const newLink = navLinks.filter((link) => link.href.split('#')[1] == currentSection.id)[0]
+
+    if (newLink && newLink !== currentLink) {
+        navLinks.map((link) => link.classList.remove("navlink-active-orange"))
+        newLink.classList.add("navlink-active-orange")
+        currentLink = newLink
+        window.history.pushState("", currentSection.id, '#' + currentSection.id)
+    }
+}
+
+function main() {
+    window.onhashchange = handleURLChange
+    window.onscroll = () => {
+        window.clearTimeout(scrollTimeout)
+        scrollTimeout = window.setTimeout(handleScroll, 50)
+    }
+    initMobileNav()
+}
+
+main()
+
+
+
+}
+/*
+     FILE ARCHIVED ON 05:24:46 May 12, 2020 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 22:57:55 Jan 02, 2023.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  captures_list: 1068.851
+  exclusion.robots: 0.059
+  exclusion.robots.policy: 0.053
+  cdx.remote: 0.047
+  esindex: 0.007
+  LoadShardBlock: 713.035 (3)
+  PetaboxLoader3.datanode: 160.154 (5)
+  CDXLines.iter: 12.169 (3)
+  PetaboxLoader3.resolve: 1526.056 (3)
+  load_resource: 1093.444 (2)
+*/
